@@ -25,15 +25,19 @@ steps:
       script: |      
         msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
 
-    - task: ArchiveFiles@2
-      name: 'PrepareMacApp'
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
-        includeRootFolder: true
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceVersion).zip'
-        replaceExistingArchive: true
-        verbose: true
+  - task: ArchiveFiles@2
+    name: 'PrepareMacApp'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '2'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceVersion).zip'
+      replaceExistingArchive: true
+      verbose: true
 
   - task: Bash@3
     name: 'PrepareMacExtension'
