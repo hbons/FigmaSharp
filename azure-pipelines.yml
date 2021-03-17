@@ -25,20 +25,27 @@ steps:
       script: |      
         msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
 
+    - task: ArchiveFiles@2
+      name: 'PrepareMacApp'
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceVersion).zip'
+        replaceExistingArchive: true
+        verbose: true
+
   - task: Bash@3
-    name: 'PreparePublish'
+    name: 'PrepareMacExtension'
     inputs:
       targetType: 'inline'
       script: |      
-        cd ${SOURCES_DIRECTORY}/tools/FigmaSharpApp/bin/Release
-        zip --recurse-paths FigmaSharpApp-${SOURCE_VERSION}.zip FigmaSharpApp.app && mv FigmaSharpApp-${SOURCE_VERSION}.zip ${SOURCES_DIRECTORY}
         mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
 
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 
       repositoryName: '$(Build.Repository.Name)'
-      action: 'create'
       target: '$(Build.SourceVersion)'
       addChangeLog: false
       assets: |
