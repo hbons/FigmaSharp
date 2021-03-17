@@ -4,8 +4,13 @@ trigger:
 pool:
   vmImage: 'macOS-10.15'
 
-steps:
+variables:
+ - name: SOURCES_DIRECTORY
+   value: $(Build.SourcesDirectory)
+ - name: SOURCE_VERSION
+   value: $(Build.SourceVersion)
 
+steps:
   - task: Bash@3
     name: 'BuildMacApp'
     inputs:
@@ -25,9 +30,9 @@ steps:
     inputs:
       targetType: 'inline'
       script: |      
-        cd $(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release
-        zip --recurse-paths FigmaSharpApp-${Build.SourceVersion}.zip FigmaSharpApp.app && mv FigmaSharpApp-${Build.SourceVersion}.zip ${Build.SourcesDirectory}
-        mv ${Build.SourcesDirectory}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${Build.SourcesDirectory}/FigmaSharpExtension-${Build.SourceVersion}.mpack
+        cd ${SOURCES_DIRECTORY}/tools/FigmaSharpApp/bin/Release
+        zip --recurse-paths FigmaSharpApp-$SOURCE_VERSION.zip FigmaSharpApp.app && mv FigmaSharpApp-${SOURCE_VERSION}.zip ${SOURCES_DIRECTORY}
+        mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
 
 - task: GitHubRelease@0
   name: 'PublishToGitHub'
