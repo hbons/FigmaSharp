@@ -7,13 +7,14 @@ trigger:
 - main
 
 pool:
-  vmImage: 'macos-latest'
+  vmImage: 'macOS-10.15'
 
 steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
     script: |
+      rm -Rf /Library/Frameworks/Mono.framework/External/xbuild/Xamarin/Mac
       wget https://dl.xamarin.com/XamarinforMac/Mac/xamarin.mac-6.8.3.0.pkg
       sudo installer -pkg xamarin.mac*.pkg -target /
 
