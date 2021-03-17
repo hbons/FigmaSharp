@@ -17,9 +17,7 @@ steps:
       wget https://dl.xamarin.com/XamarinforMac/Mac/xamarin.mac-6.8.3.0.pkg
       sudo installer -pkg xamarin.mac*.pkg -target /
 
-      wget https://download.visualstudio.microsoft.com/download/pr/2aa9c320-b801-4fcb-af34-b01feb48f61d/2ff54bbeed83c42a0dc2c9fb9f3cc13a/visualstudioformac-8.4.0.2657.dmg
-      hdiutil attach visualstudioformac-*.dmg
-      cp -R /Volumes/Visual\ Studio/Visual\ Studio.app /Applications/
+
 
       git submodule update --init --recursive
       
