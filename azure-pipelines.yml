@@ -1,0 +1,28 @@
+# Xcode
+# Build, test, and archive an Xcode workspace on macOS.
+# Add steps that install certificates, test, sign, and distribute an app, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
+
+trigger:
+- main
+
+pool:
+  vmImage: 'macos-latest'
+
+steps:
+  # Install Xamarin.Mac
+  - wget https://dl.xamarin.com/XamarinforMac/Mac/xamarin.mac-6.8.3.0.pkg
+  - sudo installer -pkg xamarin.mac*.pkg -target /
+
+    # Install Visual Studio for Mac
+  - wget https://download.visualstudio.microsoft.com/download/pr/2aa9c320-b801-4fcb-af34-b01feb48f61d/2ff54bbeed83c42a0dc2c9fb9f3cc13a/visualstudioformac-8.4.0.2657.dmg
+  - hdiutil attach visualstudioformac-*.dmg
+  - cp -R /Volumes/Visual\ Studio/Visual\ Studio.app /Applications/
+
+  - git submodule update --init --recursive
+
+  # Build FigmaSharpApp
+  - msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
+
+  # Build FigmaSharpExtension
+  - msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
