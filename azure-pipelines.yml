@@ -42,10 +42,11 @@ jobs:
 
     - task: GitHubRelease@0
       inputs:
-        gitHubConnection: hbons
+        gitHubConnection:
         repositoryName: '$(Build.Repository.Name)'
         target: '$(Build.SourceVersion)'
         addChangeLog: false
+        tagSource: auto
         assets: |
           $(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip
           $(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack
