@@ -29,15 +29,6 @@ steps:
     name: 'PrepareMacApp'
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
-- task: CopyFiles@2
-  inputs:
-    Contents: '**'
-    TargetFolder: '2'
-      includeRootFolder: true
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.SourceVersion).zip'
-      replaceExistingArchive: true
-      verbose: true
 
   - task: Bash@3
     name: 'PrepareMacExtension'
