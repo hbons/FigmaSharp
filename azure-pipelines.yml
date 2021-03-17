@@ -30,15 +30,15 @@ steps:
     inputs:
       targetType: 'inline'
       script: |      
-        cd ${SOURCES_DIRECTORY}/tools/FigmaSharpApp/bin/Release
-        zip --recurse-paths FigmaSharpApp-$SOURCE_VERSION.zip FigmaSharpApp.app && mv FigmaSharpApp-${SOURCE_VERSION}.zip ${SOURCES_DIRECTORY}
-        mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
+        cd ${{ SOURCES_DIRECTORY }}/tools/FigmaSharpApp/bin/Release
+        zip --recurse-paths FigmaSharpApp-${{ SOURCE_VERSION }}.zip FigmaSharpApp.app && mv FigmaSharpApp-${{ SOURCE_VERSION }}.zip ${{ SOURCES_DIRECTORY }}
+        mv ${{ SOURCES_DIRECTORY }}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${{ SOURCES_DIRECTORY }}/FigmaSharpExtension-${{ SOURCE_VERSION }}.mpack
 
   - task: GitHubRelease@0
     name: 'PublishToGitHub'
     inputs:
       gitHubConnection:
-        repositoryName: '$(Build.Repository.Name)'
+        repositoryName: 'hbons/FigmaSharp'
         action: 'create'
         target: '$(Build.SourceVersion)'
 
