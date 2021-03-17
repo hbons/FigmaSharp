@@ -5,10 +5,10 @@ pool:
   vmImage: 'macOS-10.15'
 
 variables:
- - name: SOURCES_DIRECTORY
-   value: $(Build.SourcesDirectory)
- - name: SOURCE_VERSION
-   value: $(Build.SourceVersion)
+  - name: SOURCES_DIRECTORY
+    value: $(Build.SourcesDirectory)
+  - name: SOURCE_VERSION
+    value: $(Build.SourceVersion)
 
 steps:
   - task: Bash@3
@@ -34,20 +34,3 @@ steps:
         zip --recurse-paths FigmaSharpApp-${{ SOURCE_VERSION }}.zip FigmaSharpApp.app && mv FigmaSharpApp-${{ SOURCE_VERSION }}.zip ${{ SOURCES_DIRECTORY }}
         mv ${{ SOURCES_DIRECTORY }}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${{ SOURCES_DIRECTORY }}/FigmaSharpExtension-${{ SOURCE_VERSION }}.mpack
 
-  - task: GitHubRelease@0
-    name: 'PublishToGitHub'
-    inputs:
-      gitHubConnection:
-        repositoryName: 'hbons/FigmaSharp'
-        action: 'create'
-        target: '$(Build.SourceVersion)'
-
-        assets: |
-          $(Build.ArtifactStagingDirectory)/*.exe
-          $(Build.ArtifactStagingDirectory)/README.txt
-
-        assetUploadMode: 'delete'
-        tagSource: 'auto'
-        isDraft: false
-        isPreRelease: false
-        addChangeLog: false
