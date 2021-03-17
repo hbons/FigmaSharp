@@ -9,7 +9,7 @@ trigger:
 pool:
   vmImage: 'macos-latest'
 
- task: CmdLine@2
+- task: CmdLine@2
   inputs:
     script: 'wget https://dl.xamarin.com/XamarinforMac/Mac/xamarin.mac-6.8.3.0.pkg' 
 
