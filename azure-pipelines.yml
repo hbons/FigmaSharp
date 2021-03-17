@@ -1,10 +1,8 @@
-name: 'Build FigmaSharp.Mac'
-
 trigger:
   - main
 
 jobs:
-- job: FigmaSharpMac
+- job: 'Build FigmaSharp.Mac'
 
   pool:
     vmImage: 'macOS-10.15'
