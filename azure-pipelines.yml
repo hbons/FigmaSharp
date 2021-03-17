@@ -1,9 +1,10 @@
+name: 'Build FigmaSharp.Mac'
+
 trigger:
   - main
 
 pool:
   vmImage: 'macOS-10.15'
-  name: 'Build FigmaSharp.Mac'
 
 variables:
   - name: SOURCES_DIRECTORY
@@ -11,19 +12,19 @@ variables:
   - name: SOURCE_VERSION
     value: $(Build.SourceVersion)
 
-steps:  
+steps:
   - task: Bash@3
     name: 'BuildMacApp'
     inputs:
       targetType: 'inline'
-      script: |      
+      script: |
         msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
 
   - task: Bash@3
     name: 'BuildMacExtension'
     inputs:
       targetType: 'inline'
-      script: |      
+      script: |
         msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
 
   - task: ArchiveFiles@2
@@ -35,7 +36,7 @@ steps:
     name: 'PrepareMacExtension'
     inputs:
       targetType: 'inline'
-      script: |      
+      script: |
         mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
 
   - task: GitHubRelease@0
