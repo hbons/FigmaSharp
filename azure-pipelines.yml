@@ -3,13 +3,13 @@
 # Add steps that install certificates, test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
 
+stages:
 trigger:
   - main
 
 pool:
   vmImage: 'macos-latest'
-
-- task: Bash@3
+  task: Bash@3
   inputs:
     targetType: 'inline'
     script: |
