@@ -14,13 +14,7 @@ steps:
   name: 'InstallXamarinMac'
   inputs:
     targetType: 'inline'
-    script: |
-
-
-
-
-      git submodule update --init --recursive
-      
+    script: |      
       msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
       msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
 
