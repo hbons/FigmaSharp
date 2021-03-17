@@ -4,12 +4,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
 
 trigger:
-- main
+  - main
 
 pool:
   vmImage: 'macos-latest'
 
-- task: CmdLine@2
+- task: Bash@3
   inputs:
-    script: 'wget https://dl.xamarin.com/XamarinforMac/Mac/xamarin.mac-6.8.3.0.pkg' 
-
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      
+      echo 'Hello world'
