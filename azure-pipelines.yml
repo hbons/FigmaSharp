@@ -3,6 +3,7 @@ trigger:
 
 pool:
   vmImage: 'macOS-10.15'
+  name: 'Build FigmaSharp.Mac'
 
 variables:
   - name: SOURCES_DIRECTORY
@@ -10,9 +11,7 @@ variables:
   - name: SOURCE_VERSION
     value: $(Build.SourceVersion)
 
-steps:
-  name: 'Build FigmaSharp.Mac'
-  
+steps:  
   - task: Bash@3
     name: 'BuildMacApp'
     inputs:
