@@ -3,48 +3,51 @@ name: 'Build FigmaSharp.Mac'
 trigger:
   - main
 
-pool:
-  vmImage: 'macOS-10.15'
+jobs:
+- job: FigmaSharpMac
 
-variables:
-  - name: SOURCES_DIRECTORY
-    value: $(Build.SourcesDirectory)
-  - name: SOURCE_VERSION
-    value: $(Build.SourceVersion)
+  pool:
+    vmImage: 'macOS-10.15'
 
-steps:
-  - task: Bash@3
-    name: 'BuildMacApp'
-    inputs:
-      targetType: 'inline'
-      script: |
-        msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
+  variables:
+    - name: SOURCES_DIRECTORY
+      value: $(Build.SourcesDirectory)
+    - name: SOURCE_VERSION
+      value: $(Build.SourceVersion)
 
-  - task: Bash@3
-    name: 'BuildMacExtension'
-    inputs:
-      targetType: 'inline'
-      script: |
-        msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
+  steps:
+    - task: Bash@3
+      name: 'BuildMacApp'
+      inputs:
+        targetType: 'inline'
+        script: |
+          msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
 
-  - task: ArchiveFiles@2
-    name: 'PrepareMacApp'
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
+    - task: Bash@3
+      name: 'BuildMacExtension'
+      inputs:
+        targetType: 'inline'
+        script: |
+          msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
 
-  - task: Bash@3
-    name: 'PrepareMacExtension'
-    inputs:
-      targetType: 'inline'
-      script: |
-        mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
+    - task: ArchiveFiles@2
+      name: 'PrepareMacApp'
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
 
-  - task: GitHubRelease@0
-    inputs:
-      gitHubConnection: 
-      repositoryName: '$(Build.Repository.Name)'
-      target: '$(Build.SourceVersion)'
-      addChangeLog: false
-      assets: |
-        $(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip
-        $(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack
+    - task: Bash@3
+      name: 'PrepareMacExtension'
+      inputs:
+        targetType: 'inline'
+        script: |
+          mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
+
+    - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: 
+        repositoryName: '$(Build.Repository.Name)'
+        target: '$(Build.SourceVersion)'
+        addChangeLog: false
+        assets: |
+          $(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip
+          $(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack
