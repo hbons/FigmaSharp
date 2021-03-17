@@ -44,7 +44,7 @@ jobs:
       inputs:
         gitHubConnection:
         repositoryName: '$(Build.Repository.Name)'
-        target: '$(Build.SourceVersion)'
+        target: '$(Build.BuildVersion)'
         addChangeLog: false
         tagSource: auto
         assets: |
