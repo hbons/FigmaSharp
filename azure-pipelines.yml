@@ -11,6 +11,8 @@ variables:
     value: $(Build.SourceVersion)
 
 steps:
+  name: 'Build FigmaSharp.Mac'
+  
   - task: Bash@3
     name: 'BuildMacApp'
     inputs:
