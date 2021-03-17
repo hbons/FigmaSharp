@@ -1,24 +1,49 @@
-# Xcode
-# Build, test, and archive an Xcode workspace on macOS.
-# Add steps that install certificates, test, sign, and distribute an app, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/xcode
-
 trigger:
-- main
+  - main
 
 pool:
   vmImage: 'macOS-10.15'
 
 steps:
-- task: Bash@3
-  name: 'InstallXamarinMac'
+
+  - task: Bash@3
+    name: 'BuildMacApp'
+    inputs:
+      targetType: 'inline'
+      script: |      
+        msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
+
+  - task: Bash@3
+    name: 'BuildMacExtension'
+    inputs:
+      targetType: 'inline'
+      script: |      
+        msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
+
+  - task: Bash@3
+    name: 'BeforePublish'
+    inputs:
+      targetType: 'inline'
+      script: |      
+        cd $(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release
+        zip --recurse-paths FigmaSharpApp-${Build.SourceVersion}.zip FigmaSharpApp.app && mv FigmaSharpApp-${Build.SourceVersion}.zip ${Build.SourcesDirectory}
+        mv ${Build.SourcesDirectory}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${Build.SourcesDirectory}/FigmaSharpExtension-${Build.SourceVersion}.mpack
+
+- task: GitHubRelease@0
+  name: 'PublishToGitHub'
   inputs:
-    targetType: 'inline'
-    script: |      
-      msbuild tools/FigmaSharpApp/FigmaSharpApp.csproj /p:"Configuration=Release;Platform=AnyCPU" /restore
-      msbuild tools/MonoDevelop.Figma/MonoDevelop.Figma.csproj /p:Configuration=Release /p:InstallAddin=true /restore
+    gitHubConnection:
+      repositoryName: '$(Build.Repository.Name)' 
+      action: 'create'
+      target: '$(Build.SourceVersion)'
 
+      assets: '$(Build.ArtifactStagingDirectory)/*'
+      assets: |
+        $(Build.ArtifactStagingDirectory)/*.exe
+        $(Build.ArtifactStagingDirectory)/README.txt
 
-
-
-
+      assetUploadMode: 'delete'
+      tagSource: 'auto'
+      isDraft: false
+      isPreRelease: false
+      addChangeLog: false
