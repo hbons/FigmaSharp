@@ -55,5 +55,5 @@ jobs:
       name: 'PublishMacExtension'
       inputs:
         PathtoPublish: '$(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack'
-        ArtifactName: 'drop'
+        ArtifactName: 'MacBuilds'
         publishLocation: 'Container'
