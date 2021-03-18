@@ -44,14 +44,16 @@ jobs:
         script: |
           mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension.mpack
 
-    - task: PublishPipelineArtifact@1
+    - task: PublishBuildArtifacts@1
       name: 'PublishMacApp'
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
-        publishLocation: 'pipeline'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
-    - task: PublishPipelineArtifact@1
+    - task: PublishBuildArtifacts@1
       name: 'PublishMacExtension'
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/FigmaSharpExtension.mpack'
-        publishLocation: 'pipeline'
+        PathtoPublish: '$(Build.SourcesDirectory)/FigmaSharpExtension.mpack'
+        ArtifactName: 'drop2'
+        publishLocation: 'Container'
