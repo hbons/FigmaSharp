@@ -32,6 +32,10 @@ jobs:
       name: 'PrepareMacApp'
       inputs:
         rootFolderOrFile: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app'
+        includeRootFolder: true
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
+        replaceExistingArchive: true
 
     - task: Bash@3
       name: 'PrepareMacExtension'
@@ -43,7 +47,7 @@ jobs:
     - task: PublishPipelineArtifact@1
       name: 'PublishMacApp'
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app.zip'
+        targetPath: '$(Build.ArtifactStagingDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
