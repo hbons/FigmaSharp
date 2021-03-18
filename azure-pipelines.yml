@@ -48,7 +48,7 @@ jobs:
       name: 'PublishMacApp'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
-        ArtifactName: 'drop'
+        ArtifactName: 'MacBuilds'
         publishLocation: 'Container'
 
     - task: PublishBuildArtifacts@1
