@@ -40,13 +40,16 @@ jobs:
         script: |
           mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
 
-    - task: GitHubRelease@0
+    - task: PublishPipelineArtifact@1
+      name: 'PublishMacApp'
       inputs:
-        gitHubConnection:
-        repositoryName: '$(Build.Repository.Name)'
-        target: '$(Build.BuildVersion)'
-        addChangeLog: false
-        tagSource: auto
-        assets: |
-          $(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip
-          $(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: '$(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
+        publishLocation: 'pipeline'
+
+    - task: PublishPipelineArtifact@1
+      name: 'PublishMacExtension'
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: '$(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack'
+        publishLocation: 'pipeline'
