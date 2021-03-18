@@ -43,13 +43,11 @@ jobs:
     - task: PublishPipelineArtifact@1
       name: 'PublishMacApp'
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
-        artifact: '$(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
+        targetPath: '$(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
       name: 'PublishMacExtension'
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
-        artifact: '$(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack'
+        targetPath: '$(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack'
         publishLocation: 'pipeline'
