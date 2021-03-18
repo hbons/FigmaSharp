@@ -38,16 +38,16 @@ jobs:
       inputs:
         targetType: 'inline'
         script: |
-          mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension-${SOURCE_VERSION}.mpack
+          mv ${SOURCES_DIRECTORY}/tools/MonoDevelop.Figma/bin/Release/*/*.mpack ${SOURCES_DIRECTORY}/FigmaSharpExtension.mpack
 
     - task: PublishPipelineArtifact@1
       name: 'PublishMacApp'
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/FigmaSharpApp-$(Build.SourceVersion).zip'
+        targetPath: '$(Build.SourcesDirectory)/tools/FigmaSharpApp/bin/Release/FigmaSharpApp.app.zip'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
       name: 'PublishMacExtension'
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/FigmaSharpExtension-$(Build.SourceVersion).mpack'
+        targetPath: '$(Build.SourcesDirectory)/FigmaSharpExtension.mpack'
         publishLocation: 'pipeline'
